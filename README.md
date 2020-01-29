@@ -34,6 +34,6 @@ All JoinMarket data should be located at `~/.joinmarket`.
 
 List all scripts available to run:
 
-docker run --rm -it --entrypoint="" dmp1ce/joinmarket ls /jm/clientserver
+`docker run --rm -it --entrypoint="" dmp1ce/joinmarket ls /jm/clientserver`
 
 See [JoinMarket repo](https://github.com/JoinMarket-Org/joinmarket-clientserver) for more information on using JoinMarket.
