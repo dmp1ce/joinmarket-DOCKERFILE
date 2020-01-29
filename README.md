@@ -1,6 +1,10 @@
-# JoinMarket docker image
+# [JoinMarket](https://github.com/JoinMarket-Org/joinmarket-clientserver) Docker Images
 
-Easy setup for JoinMarket!
+See [dmp1ce/joinmarket](https://hub.docker.com/r/dmp1ce/joinmarket/tags/) on Docker Hub for available images.
+
+## Tags
+
+- `latest` ([Dockerfile](https://github.com/dmp1ce/joinmarket-DOCKERFILE/blob/master/Dockerfile))
 
 ## What is this?
 
