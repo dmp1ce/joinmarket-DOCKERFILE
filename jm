@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+_HOME=$(realpath ~/)
+_UID=$(id -u)
+_GID=$(id -g)
+
+docker run --rm -it -e UID="$_UID" -e GID="$_GID" -v "$_HOME/.joinmarket":/home/joinmarket/.joinmarket dmp1ce/joinmarket "$*"

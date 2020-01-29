@@ -1,3 +1,6 @@
+# Intended to be the Dockerfile for JoinMarket releases
+# Broken for now, until a new release with requirements/base.txt is created
+
 FROM debian:buster-slim
 
 # Referenced Dockerfile here: https://github.com/roshii/docker-joinmarket/blob/master/Dockerfile
@@ -15,15 +18,23 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir -p /jm
 
-# Source code from git
-# hadolint ignore=DL3008,DL3003
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends git \
+# Source code from release archive
+ENV JM_VERSION 0.6.1
+ENV JM_URL https://github.com/JoinMarket-Org/joinmarket-clientserver/archive/v$JM_VERSION.tar.gz
+ENV JM_ASC_URL https://github.com/JoinMarket-Org/joinmarket-clientserver/releases/download/v$JM_VERSION/joinmarket-clientserver-$JM_VERSION.tar.gz.asc
+ENV JM_PGP_KEY 2B6FC204D9BF332D062B461A141001A1AF77F20B
+
+# hadolint ignore=DL3008
+RUN apt-get install -y --no-install-recommends ca-certificates wget gpg dirmngr gpg-agent \
   && apt-get clean \
+  && rm -rf /tmp/* \
   && rm -rf /var/lib/apt/lists/* \
-  && git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git /jm/clientserver \
-  && cd /jm/clientserver \
-  && git checkout master
+  && wget -qO jm.tar.gz "$JM_URL" \
+  && gpg --keyserver keyserver.ubuntu.com --recv-keys "$JM_PGP_KEY" \
+  && wget -qO jm.asc "$JM_ASC_URL" \
+  && gpg --verify jm.asc jm.tar.gz \
+  && mkdir -p /jm/clientserver \
+  && tar -xzvf jm.tar.gz -C /jm/clientserver --strip-components=1 \
 
 # Python dependencies
 WORKDIR /jm/clientserver
