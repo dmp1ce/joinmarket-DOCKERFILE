@@ -19,7 +19,7 @@ RUN apt-get update \
   && mkdir -p /jm
 
 # Source code from release archive
-ENV JM_VERSION 0.6.1
+ENV JM_VERSION 0.6.2
 ENV JM_URL https://github.com/JoinMarket-Org/joinmarket-clientserver/archive/v$JM_VERSION.tar.gz
 ENV JM_ASC_URL https://github.com/JoinMarket-Org/joinmarket-clientserver/releases/download/v$JM_VERSION/joinmarket-clientserver-$JM_VERSION.tar.gz.asc
 ENV JM_PGP_KEY 2B6FC204D9BF332D062B461A141001A1AF77F20B
@@ -34,7 +34,7 @@ RUN apt-get install -y --no-install-recommends ca-certificates wget gpg dirmngr 
   && wget -qO jm.asc "$JM_ASC_URL" \
   && gpg --verify jm.asc jm.tar.gz \
   && mkdir -p /jm/clientserver \
-  && tar -xzvf jm.tar.gz -C /jm/clientserver --strip-components=1 \
+  && tar -xzvf jm.tar.gz -C /jm/clientserver --strip-components=1
 
 # Python dependencies
 WORKDIR /jm/clientserver
