@@ -1,6 +1,4 @@
 # Intended to be the Dockerfile for JoinMarket releases
-# Broken for now, until a new release with requirements/base.txt is created
-
 FROM debian:buster-slim
 
 # Referenced Dockerfile here: https://github.com/roshii/docker-joinmarket/blob/master/Dockerfile
