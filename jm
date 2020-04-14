@@ -1,8 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 set -e
+
+if [ "$1" = "--dev" ]; then
+    IMAGE=dmp1ce/joinmarket:dev
+    PARAMS="${*:2}"
+else
+    IMAGE=dmp1ce/joinmarket
+    PARAMS="$*"
+fi
 
 _HOME=$(realpath ~/)
 _UID=$(id -u)
 _GID=$(id -g)
 
-docker run --rm -it -e UID="$_UID" -e GID="$_GID" -v "$_HOME/.joinmarket":/home/joinmarket/.joinmarket dmp1ce/joinmarket "$*"
+docker run --rm -it -e UID="$_UID" -e GID="$_GID" -v "$_HOME/.joinmarket":/home/joinmarket/.joinmarket "$IMAGE" "$PARAMS"
