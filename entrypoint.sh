@@ -4,7 +4,8 @@ set -e
 _UID=$(id -u joinmarket)
 _GID=$(id -g joinmarket)
 
-if [ -n "$UID" ] && [ "$UID" != "$UID" ]; then
+# shellcheck disable=SC2039
+if [ -n "$UID" ] && [ "$UID" != "$_UID" ]; then
     _UID="$UID"
     usermod -u "$_UID" joinmarket
 fi
