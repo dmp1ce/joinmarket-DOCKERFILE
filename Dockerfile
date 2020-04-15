@@ -37,6 +37,6 @@ COPY entrypoint.sh /usr/local/bin/
 
 # Patch yield generator scripts
 COPY yg-env.patch /tmp/yg-env.patch
-RUN ls /jm/clientserver && git -C /jm/clientserver apply /tmp/yg-env.patch
+RUN git -C /jm/clientserver apply /tmp/yg-env.patch
 
 ENTRYPOINT ["entrypoint.sh"]
