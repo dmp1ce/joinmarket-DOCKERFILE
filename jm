@@ -9,8 +9,14 @@ else
     PARAMS="$*"
 fi
 
-_HOME=$(realpath ~/)
-_UID=$(id -u)
-_GID=$(id -g)
+_USERNAME=$(logname)
+_HOME=$(eval echo ~"$_USERNAME")
+_UID=$(id -u "$_USERNAME")
+_GID=$(id -g "$_USERNAME")
 
-docker run --rm -it -e UID="$_UID" -e GID="$_GID" -v "$_HOME/.joinmarket":/home/joinmarket/.joinmarket "$IMAGE" "$PARAMS"
+
+if ! docker info > /dev/null 2>&1; then
+    echo "Failed to run 'docker info'. Please make sure you have access to run docker."
+else
+    docker run --rm -it -e UID="$_UID" -e GID="$_GID" -v "$_HOME/.joinmarket":/home/joinmarket/.joinmarket "$IMAGE" "$PARAMS"
+fi
