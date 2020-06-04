@@ -7,7 +7,7 @@ GID=${GID:-1000}
 mkdir -p /home/joinmarket/.joinmarket
 
 if [ "$UID" -eq 0 ]; then
-    chown -R "$_UID":"$_GID" /home/joinmarket/.joinmarket
+    chown -R "$_UID":"$_GID" /home/joinmarket
     exec bash -c "cd /jm/clientserver/scripts && python3 $*"
 else
     _UID=$(id -u joinmarket)
@@ -24,7 +24,7 @@ else
     fi
 
     # Fix permissions according to the host user UID and GID
-    chown -R "$_UID":"$_GID" /home/joinmarket/.joinmarket
+    chown -R "$_UID":"$_GID" /home/joinmarket
     chown -R "$_UID":"$_GID" /jm/clientserver/scripts/logs
 
     exec gosu joinmarket bash -c "cd /jm/clientserver/scripts && python3 $*"
