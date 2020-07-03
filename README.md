@@ -5,7 +5,7 @@ See [dmp1ce/joinmarket](https://hub.docker.com/r/dmp1ce/joinmarket/tags/) on Doc
 ## Tags
 
 - `dev` ([Dockerfile](https://github.com/dmp1ce/joinmarket-DOCKERFILE/blob/master/Dockerfile))
-- `latest`, `0.6.2` ([Dockerfile.release](https://github.com/dmp1ce/joinmarket-DOCKERFILE/blob/master/Dockerfile.release))
+- `latest`, `0.6.3.1` ([Dockerfile.release](https://github.com/dmp1ce/joinmarket-DOCKERFILE/blob/master/Dockerfile.release))
 
 ## What is this?
 
