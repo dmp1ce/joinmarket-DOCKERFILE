@@ -27,7 +27,8 @@ RUN apt-get update \
 
 # Python dependencies
 WORKDIR /jm/clientserver
-RUN pip3 install -r requirements/base.txt
+RUN pip3 install -r requirements/base.txt \
+ && pip3 install 'matplotlib>=3'
 
 # add user and group with default ids
 RUN groupadd joinmarket \
