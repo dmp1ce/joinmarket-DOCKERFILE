@@ -4,35 +4,29 @@ FROM debian:buster-slim
 
 LABEL maintainer="David Parrish <daveparrish@tutanota.com>"
 
-# Ubuntu dependencies
-# hadolint ignore=DL3008,DL3013
+# Install known dependencies
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates wget gpg dirmngr gpg-agent gosu \
-     curl python3-dev python3-pip build-essential automake pkg-config libtool libgmp-dev \
-     libltdl-dev libssl-dev python3-pip python3-setuptools python3-nacl \
-  && pip3 install wheel \
+  && apt-get install -y --no-install-recommends ca-certificates=* wget=* gpg=* \
+     dirmngr=* gpg-agent=* gosu=* curl=* python3-dev=* python3-pip=* \
+     build-essential=* automake=* pkg-config=* libtool=* libgmp-dev=* \
+     libltdl-dev=* libssl-dev=* python3-pip=* python3-setuptools=* \
+     python3-nacl=* libsecp256k1-dev=* git=* \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
-  && mkdir -p /jm
+  && mkdir -p /jm \
+  && echo "Install dependencies for ob-watcher and bech32 features" \
+  && pip3 install 'wheel>=0.35.1' 'matplotlib>=3.3.1' 'secp256k1>=0.13.2' \
+  && echo "Install source code from git" \
+  && git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git /jm/clientserver
 
-# Source code from git
-# hadolint ignore=DL3008,DL3003
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends git \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* \
-  && git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git /jm/clientserver \
-  && cd /jm/clientserver \
-  && git checkout master
-
-# Python dependencies
+# Install source code and base requirements
+# Add user and group
 WORKDIR /jm/clientserver
-RUN pip3 install -r requirements/base.txt \
- && pip3 install 'matplotlib>=3'
+RUN git checkout master && pip3 install -r requirements/base.txt \
+ && echo "add user and group with default ids" \
+ && groupadd joinmarket \
+ && useradd -g joinmarket -s /bin/bash -m joinmarket
 
-# add user and group with default ids
-RUN groupadd joinmarket \
-  && useradd -g joinmarket -s /bin/bash -m joinmarket
 WORKDIR /home/joinmarket
 COPY entrypoint.sh /usr/local/bin/
 
