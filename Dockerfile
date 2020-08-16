@@ -14,8 +14,9 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir -p /jm \
-  && echo "Install dependencies for ob-watcher and bech32 features" \
-  && pip3 install 'wheel>=0.35.1' 'matplotlib>=3.3.1' 'secp256k1>=0.13.2' \
+  && echo "Install dependencies for ob-watcher" \
+  && pip3 install 'wheel>=0.35.1' \
+  && pip3 install 'matplotlib>=3.3.1' \
   && echo "Install source code from git" \
   && git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git /jm/clientserver
 
