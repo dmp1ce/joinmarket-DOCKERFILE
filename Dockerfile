@@ -16,6 +16,7 @@ RUN apt-get update \
   && mkdir -p /jm \
   && echo "Install dependencies for ob-watcher" \
   && pip3 install 'wheel>=0.35.1' \
+  && echo "Add dependency for ob-watcher" \
   && pip3 install 'matplotlib>=3.3.1' \
   && ecno "Install scipy for history command. Predict accumulation rate." \
   && pip3 install 'scipy>=1.5.2' \
