@@ -17,6 +17,8 @@ RUN apt-get update \
   && echo "Install dependencies for ob-watcher" \
   && pip3 install 'wheel>=0.35.1' \
   && pip3 install 'matplotlib>=3.3.1' \
+  && ecno "Install scipy for history command. Predict accumulation rate." \
+  && pip3 install 'scipy>=1.5.2' \
   && echo "Install source code from git" \
   && git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git /jm/clientserver
 
