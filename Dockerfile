@@ -21,12 +21,12 @@ RUN apt-get update \
   && ecno "Install scipy for history command. Predict accumulation rate." \
   && pip3 install 'scipy>=1.5.2' \
   && echo "Install source code from git" \
-  && git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git /jm/clientserver
+  && git clone https://github.com/jules23/joinmarket-clientserver.git /jm/clientserver
 
 # Install source code and base requirements
 # Add user and group
 WORKDIR /jm/clientserver
-RUN git checkout master && pip3 install -r requirements/base.txt \
+RUN git checkout bech32-orderbook && pip3 install -r requirements/base.txt \
  && echo "add user and group with default ids" \
  && groupadd joinmarket \
  && useradd -g joinmarket -s /bin/bash -m joinmarket
