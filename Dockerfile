@@ -23,11 +23,11 @@ RUN apt-get update \
 # Install JoinMarket and base requirements
 # Add user and group
 WORKDIR /jm/clientserver
-#RUN git checkout bech32-orderbook && pip3 install -r requirements/base.txt \
 RUN echo "Get Bech32 Orderbook code" \
   && git checkout bech32-orderbook \
   && echo "Get Docker install PR" \
-  && wget https://patch-diff.githubusercontent.com/raw/JoinMarket-Org/joinmarket-clientserver/pull/docker-install.patch \
+  && wget https://patch-diff.githubusercontent.com/raw/JoinMarket-Org/joinmarket-clientserver/pull/669.patch \
+       -O docker-install.patch \
   && git apply docker-install.patch && ./install.sh --docker-install \
   && echo "add user and group with default ids" \
   && groupadd joinmarket \

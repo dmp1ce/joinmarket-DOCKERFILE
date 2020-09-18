@@ -4,12 +4,13 @@ See [dmp1ce/joinmarket](https://hub.docker.com/r/dmp1ce/joinmarket/tags/) on Doc
 
 ## Tags
 
-- `dev` ([Dockerfile](https://github.com/dmp1ce/joinmarket-DOCKERFILE/blob/master/Dockerfile))
-- `latest`, `0.7.0` ([Dockerfile.release](https://github.com/dmp1ce/joinmarket-DOCKERFILE/blob/v0.7.0/Dockerfile.release))
+- `bech32` ([Dockerfile](https://github.com/dmp1ce/joinmarket-DOCKERFILE/blob/bech32/Dockerfile))
 
 ## What is this?
 
 A dockerized version of JoinMarket and a few helper scripts to make it easier to install and run JoinMarket scripts.
+
+This is a pull request build for Bech32 orderbooks.
 
 ## How to use
 
