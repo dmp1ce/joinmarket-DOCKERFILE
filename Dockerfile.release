@@ -4,7 +4,7 @@ FROM debian:buster-slim
 LABEL maintainer="David Parrish <daveparrish@tutanota.com>"
 
 # Source code from release archive
-ENV JM_VERSION 0.7.1
+ENV JM_VERSION 0.7.2
 ENV JM_URL https://github.com/JoinMarket-Org/joinmarket-clientserver.git
 ENV JM_TAG v$JM_VERSION
 
