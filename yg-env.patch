@@ -1,5 +1,5 @@
 diff --git a/scripts/yg-privacyenhanced.py b/scripts/yg-privacyenhanced.py
-index 1fc3bdd..ae6343b 100755
+index 72088a6..1426666 100755
 --- a/scripts/yg-privacyenhanced.py
 +++ b/scripts/yg-privacyenhanced.py
 @@ -1,7 +1,7 @@
@@ -15,32 +15,32 @@ index 1fc3bdd..ae6343b 100755
  """THESE SETTINGS CAN SIMPLY BE EDITED BY HAND IN THIS FILE:
  """
  
--ordertype = 'swreloffer'  # [string, 'swreloffer' or 'swabsoffer'] / which fee type to actually use
+-ordertype = 'reloffer'  # [string, 'reloffer' or 'absoffer'], which fee type to actually use
 -cjfee_a = 500             # [satoshis, any integer] / absolute offer fee you wish to receive for coinjoins (cj)
--cjfee_r = '0.00002'       # [percent, any str between 0-1] / relative offer fee you wish to receive based on a cj's amount
--cjfee_factor = 0.1        # [percent, 0-1] / variance around the average fee. Ex: 200 fee, 0.2 var = fee is btw 160-240
--txfee = 100               # [satoshis, any integer] / the average transaction fee you're adding to coinjoin transactions
--txfee_factor = 0.3        # [percent, 0-1] / variance around the average fee. Ex: 1000 fee, 0.2 var = fee is btw 800-1200
+-cjfee_r = '0.00002'       # [fraction, any str between 0-1] / relative offer fee you wish to receive based on a cj's amount
+-cjfee_factor = 0.1        # [fraction, 0-1] / variance around the average fee. Ex: 200 fee, 0.2 var = fee is btw 160-240
+-txfee = 0                 # [satoshis, any integer] / the average transaction fee contribution you're adding to coinjoin transactions
+-txfee_factor = 0.3        # [fraction, 0-1] / variance around the average fee contribution. Ex: 1000 fee, 0.2 var = fee is btw 800-1200
 -minsize = 100000          # [satoshis, any integer] / minimum size of your cj offer. Lower cj amounts will be disregarded
--size_factor = 0.1         # [percent, 0-1] / variance around all offer sizes. Ex: 500k minsize, 0.1 var = 450k-550k
+-size_factor = 0.1         # [fraction, 0-1] / variance around all offer sizes. Ex: 500k minsize, 0.1 var = 450k-550k
 -gaplimit = 6
-+ordertype = os.environ.get('JM_ORDERTYPE', 'swreloffer')     # [string, 'swreloffer' or 'swabsoffer'] / which fee type to actually use
++ordertype = os.environ.get('JM_ORDERTYPE', 'reloffer')       # [string, 'reloffer' or 'absoffer'] / which fee type to actually use
 +cjfee_a = int(os.environ.get('JM_CJFEE_A', 500))             # [satoshis, any integer] / absolute offer fee you wish to receive for coinjoins (cj)
-+cjfee_r = os.environ.get('JM_CJFEE_R', '0.00002')            # [percent, any str between 0-1] / relative offer fee you wish to receive based on a cj's amount
-+cjfee_factor = float(os.environ.get('JM_CJFEE_FACTOR', 0.1)) # [percent, 0-1] / variance around the average fee. Ex: 200 fee, 0.2 var = fee is btw 160-240
-+txfee = int(os.environ.get('JM_TXFEE', 100))                 # [satoshis, any integer] / the average transaction fee you're adding to coinjoin transactions
-+txfee_factor = float(os.environ.get('JM_TXFEE_FACTOR', 0.3)) # [percent, 0-1] / variance around the average fee. Ex: 1000 fee, 0.2 var = fee is btw 800-1200
-+minsize = int(os.environ.get('JM_MINSIZE', 1000000))         # [satoshis, any integer] / minimum size of your cj offer. Lower cj amounts will be disregarded
-+size_factor = float(os.environ.get('JM_SIZE_FACTOR', 0.1))   # [percent, 0-1] / variance around all offer sizes. Ex: 500k minsize, 0.1 var = 450k-550k
++cjfee_r = os.environ.get('JM_CJFEE_R', '0.00002')            # [fraction, any str between 0-1] / relative offer fee you wish to receive based on a cj's amount
++cjfee_factor = float(os.environ.get('JM_CJFEE_FACTOR', 0.1)) # [fraction, 0-1] / variance around the average fee. Ex: 200 fee, 0.2 var = fee is btw 160-240
++txfee = int(os.environ.get('JM_TXFEE', 0))                   # [satoshis, any integer] / the average transaction fee you're adding to coinjoin transactions
++txfee_factor = float(os.environ.get('JM_TXFEE_FACTOR', 0.3)) # [fraction, 0-1] / variance around the average fee. Ex: 1000 fee, 0.2 var = fee is btw 800-1200
++minsize = int(os.environ.get('JM_MINSIZE', 100000))          # [satoshis, any integer] / minimum size of your cj offer. Lower cj amounts will be disregarded
++size_factor = float(os.environ.get('JM_SIZE_FACTOR', 0.1))   # [fraction, 0-1] / variance around all offer sizes. Ex: 500k minsize, 0.1 var = 450k-550k
 +gaplimit = int(os.environ.get('JM_GAPLIMIT', 6))
  
  # end of settings customization
  
 diff --git a/scripts/yield-generator-basic.py b/scripts/yield-generator-basic.py
-index 406b0d0..7fae6ec 100755
+index ade3679..9746240 100755
 --- a/scripts/yield-generator-basic.py
 +++ b/scripts/yield-generator-basic.py
-@@ -1,17 +1,18 @@
+@@ -1,18 +1,21 @@
  #!/usr/bin/env python3
  
 +import os
@@ -49,19 +49,22 @@ index 406b0d0..7fae6ec 100755
  
  """THESE SETTINGS CAN SIMPLY BE EDITED BY HAND IN THIS FILE:
  """
--txfee = 100
--cjfee_a = 500
--cjfee_r = '0.00002'
--ordertype = 'swreloffer' #'swreloffer' or 'swabsoffer'
-+txfee = int(os.environ.get('JM_TXFEE', 100))
-+cjfee_a = int(os.environ.get('JM_CJFEE_A', 500))
-+cjfee_r = os.environ.get('JM_CJFEE_R', '0.00002')
-+ordertype = os.environ.get('JM_ORDERTYPE', 'swreloffer') #'swreloffer' or 'swabsoffer'
+ 
+-ordertype = 'reloffer' # [string, 'reloffer' or 'absoffer'], which fee type to actually use
+-cjfee_a = 500 # [satoshis, any integer] / absolute offer fee you wish to receive for coinjoins (cj)
+-cjfee_r = '0.00002' # [fraction, any str between 0-1] / relative offer fee you wish to receive based on a cj's amount
+-txfee = 0 # [satoshis, any integer] / the transaction fee contribution you're adding to coinjoin transactions
++
++ordertype = os.environ.get('JM_ORDERTYPE', 'reloffer')   # [string, 'reloffer' or 'absoffer'], which fee type to actually use
++cjfee_a = int(os.environ.get('JM_CJFEE_A', 500))         # [satoshis, any integer] / absolute offer fee you wish to receive for coinjoins (cj)
++cjfee_r = os.environ.get('JM_CJFEE_R', '0.00002')        # [fraction, any str between 0-1] / relative offer fee you wish to receive based on a cj's amount
++txfee = int(os.environ.get('JM_TXFEE', 0))               # [satoshis, any integer] / the transaction fee contribution you're adding to coinjoin transactions
  nickserv_password = ''
--max_minsize = 100000
+-minsize = 100000 # [satoshis, any integer] / minimum size of your cj offer. Lower cj amounts will be disregarded
 -gaplimit = 6
-+max_minsize = int(os.environ.get('JM_MINSIZE', 100000))
++minsize = int(os.environ.get('JM_MINSIZE', 100000))      # [satoshis, any integer] / minimum size of your cj offer. Lower cj amounts will be disregarded
 +gaplimit = int(os.environ.get('JM_GAPLIMIT', 6))
++
  
  if __name__ == "__main__":
      ygmain(YieldGeneratorBasic, txfee=txfee, cjfee_a=cjfee_a,
