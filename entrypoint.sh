@@ -25,7 +25,6 @@ else
 
     # Fix permissions according to the host user UID and GID
     chown -R "$_UID":"$_GID" /home/joinmarket
-    chown -R "$_UID":"$_GID" /jm/clientserver/scripts/logs
 
     exec gosu joinmarket bash -c "cd /jm/clientserver/scripts && python3 $*"
 fi
