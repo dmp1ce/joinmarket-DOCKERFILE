@@ -32,9 +32,9 @@ RUN apt-get update \
 WORKDIR /jm/clientserver
 RUN echo "Get Docker install PR" \
   && git checkout $JM_TAG \
-  && git fetch origin pull/669/head:docker-install \
+  && wget https://patch-diff.githubusercontent.com/raw/JoinMarket-Org/joinmarket-clientserver/pull/669.patch \
   && git config user.email joinmarket-dockerfile@email && git config user.name "JoinMarket Dockerfile" \
-  && git merge docker-install && ./install.sh --docker-install \
+  && git am 669.patch && ./install.sh --docker-install \
   && echo "add user and group with default ids" \
   && groupadd joinmarket \
   && useradd -g joinmarket -s /bin/bash -m joinmarket
