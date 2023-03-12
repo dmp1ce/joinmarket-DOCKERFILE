@@ -4,7 +4,7 @@ FROM debian:bullseye-slim
 LABEL maintainer="David Parrish <daveparrish@tutanota.com>"
 
 # Source code from release archive
-ENV JM_VERSION 0.9.7
+ENV JM_VERSION 0.9.9
 ENV JM_URL https://github.com/JoinMarket-Org/joinmarket-clientserver.git
 ENV JM_TAG v$JM_VERSION
 
@@ -31,10 +31,14 @@ RUN apt-get update \
 # Add user and group
 WORKDIR /jm/clientserver
 RUN git checkout $JM_TAG \
+  && apt update \
   && ./install.sh --docker-install \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* \
   && echo "add user and group with default ids" \
   && groupadd joinmarket \
   && useradd -g joinmarket -s /bin/bash -m joinmarket
+
 
 WORKDIR /home/joinmarket
 COPY entrypoint.sh /usr/local/bin/

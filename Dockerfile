@@ -24,7 +24,10 @@ RUN apt-get update \
 # Install JoinMarket and base requirements
 # Add user and group
 WORKDIR /jm/clientserver
-RUN ./install.sh --docker-install \
+RUN apt update \
+ && ./install.sh --docker-install \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/* \
  && echo "add user and group with default ids" \
  && groupadd joinmarket \
  && useradd -g joinmarket -s /bin/bash -m joinmarket
